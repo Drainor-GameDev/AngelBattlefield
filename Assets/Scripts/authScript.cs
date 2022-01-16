@@ -19,9 +19,10 @@ namespace KILLER
         // Start is called before the first frame update
         void Start()
         {
+            SettingUI.GetComponent<KILLER.Setting>().myCloseEvent.AddListener(CloseSettings);
             playFabmanager = GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>();
         }
-        public void Close()
+        public void CloseSettings()
         {
             if (SettingUI.active)
             {
@@ -197,7 +198,7 @@ namespace KILLER
             foreach (var item in result.Statistics)
             {
                 playFabmanager.Player_Xp = result.Statistics[0].Value;
-                playFabmanager.Player_Lvl = result.Statistics[2].Value;
+                playFabmanager.Player_Lvl = result.Statistics[1].Value;
             }
             //playFabmanager.Player_Score = result.Statistics[0].Value;
             playFabmanager.LoadingMessage("Loading Profil SuccessFull...");

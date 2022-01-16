@@ -95,6 +95,7 @@
 -define:ENABLE_LEGACY_INPUT_MANAGER
 -define:ENABLE_PLAYFABSERVER_API
 -define:ENABLE_PLAYFABADMIN_API
+-define:UNITY_POST_PROCESSING_STACK_V2
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
 -r:"Assets/Plugins/Photon3Unity3D.dll"
@@ -281,6 +282,9 @@
 -r:"F:/AngelBattlefield/Library/PackageCache/com.unity.cinemachine@2.7.8/Runtime/ThirdParty/clipper_library.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Cinemachine.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/PlayFab.ref.dll"
+-r:"Library/Bee/artifacts/500b0aP.dag/Unity.Postprocessing.Runtime.ref.dll"
+-r:"Library/Bee/artifacts/500b0aP.dag/Unity.Recorder.Base.ref.dll"
+-r:"Library/Bee/artifacts/500b0aP.dag/Unity.Recorder.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Unity.RenderPipelines.Core.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Unity.RenderPipelines.Core.ShaderLibrary.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Unity.RenderPipelines.HighDefinition.Config.Runtime.ref.dll"

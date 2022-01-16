@@ -7,7 +7,10 @@ public class Explosion : MonoBehaviour
     public int Damage, timer;
     private void Start()
     {
-        StartCoroutine(delay());
+        if (GetComponent<PhotonView>().isMine)
+        {
+            StartCoroutine(delay());
+        }
     }
     public IEnumerator delay()
     {

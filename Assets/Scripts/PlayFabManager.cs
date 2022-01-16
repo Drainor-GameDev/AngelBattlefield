@@ -16,7 +16,7 @@ namespace KILLER
         public GetCharacterLeaderboardResult players;
         public GetTitleNewsResult news;
         TMPro.TMP_Text txtMessage;
-        public GameObject panel;
+        public GameObject panel, settingsWindow;
         GameObject player;
         [SerializeField]
         int LoadingTimeOut = 3;
@@ -69,6 +69,7 @@ namespace KILLER
         {
             LoadingMessage(error.ErrorMessage);
             print(error.ErrorDetails);
+            LoadingHide();
         }
         public List<PlayFab.ClientModels.FriendInfo> friendList;
         public void GetFriends()
@@ -121,7 +122,7 @@ namespace KILLER
                 Comment = "Reported"
             }, result =>
             {
-
+                print("Reported");
             },
                 DisplayPlayFabError
             );
@@ -146,6 +147,17 @@ namespace KILLER
         private void LogFailure(PlayFabError obj)
         {
             throw new NotImplementedException();
+        }
+
+        public void AddXP(int xp)
+        {
+            Player_Xp += xp;
+            while(Player_Xp >= 2000)
+            {
+                Player_Xp -= 2000;
+                Player_Lvl++;
+            }
+            save();
         }
         #endregion
 
@@ -310,7 +322,4 @@ namespace KILLER
         }
         #endregion
     }
-
-
-
 }

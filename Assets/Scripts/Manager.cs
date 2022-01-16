@@ -7,7 +7,6 @@ public class Manager : MonoBehaviour
 {
     public GameObject[] spawns;
     public GameObject player;
-    public int squad;
     bool setPlayer = false;
     // Start is called before the first frame update
     void Start()
@@ -32,7 +31,7 @@ public class Manager : MonoBehaviour
                     loaded++;
                 }
             }
-            if (loaded == PhotonNetwork.room.MaxPlayers)
+            if (loaded == PhotonNetwork.room.PlayerCount)
             {
                 setPlayer = true;
                 GameObject go = PhotonNetwork.Instantiate("Player" + PhotonNetwork.player.CustomProperties["Champion"], spawns[(int)PhotonNetwork.player.CustomProperties["Squad"] - 1].transform.position, Quaternion.identity, 0);

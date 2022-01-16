@@ -478,7 +478,7 @@ Material:
     - _Metallic1: 0
     - _Metallic2: 0
     - _Metallic3: 0
-    - _MetallicRemapMax: 0
+    - _MetallicRemapMax: 0.44570994
     - _MetallicRemapMax0: 1
     - _MetallicRemapMax1: 1
     - _MetallicRemapMax2: 1
@@ -527,7 +527,7 @@ Material:
     - _Smoothness3: 0.5
     - _SmoothnessMax: 0.7
     - _SmoothnessMin: 0.3
-    - _SmoothnessRemapMax: 0
+    - _SmoothnessRemapMax: 0.07258835
     - _SmoothnessRemapMax0: 1
     - _SmoothnessRemapMax1: 1
     - _SmoothnessRemapMax2: 1

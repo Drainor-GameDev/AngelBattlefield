@@ -106,8 +106,10 @@
 -define:ENABLE_LEGACY_INPUT_MANAGER
 -define:ENABLE_PLAYFABSERVER_API
 -define:ENABLE_PLAYFABADMIN_API
+-define:UNITY_POST_PROCESSING_STACK_V2
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
+-r:"Assets/Effects/EffectExamples/Editor/PackageManagerAssembly/PackageManagerAssembly.dll"
 -r:"Assets/Plugins/Photon3Unity3D.dll"
 -r:"Assets/Plugins/WebSocket/websocket-sharp.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2021.1.20f1/Editor/Data/Managed/UnityEditor.Graphs.dll"
@@ -315,6 +317,12 @@
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/PlayFab.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/PlayFabEditorExtensions.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/PlayFabSDKEditor.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.2D.Sprite.Editor.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Postprocessing.Editor.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Postprocessing.Runtime.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Recorder.Base.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Recorder.Editor.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Recorder.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.RenderPipelines.Core.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.RenderPipelines.Core.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.RenderPipelines.Core.ShaderLibrary.ref.dll"
@@ -337,6 +345,7 @@
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/UnityEngine.TestRunner.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/UnityEngine.UI.ref.dll"
+"Assets/Effects/EffectExamples/TutorialInfo/Scripts/Editor/ReadmeEditor.cs"
 "Assets/Effects/PinwheelFantasyEffect/Script/Editor/CompileLogger.cs"
 "Assets/Effects/PinwheelFantasyEffect/Script/Editor/PolarisV2AdsWindow.cs"
 "Assets/Photon Unity Networking/Demos/DemoHub/Editor/PunStartup.cs"

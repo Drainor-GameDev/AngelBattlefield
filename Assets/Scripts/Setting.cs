@@ -2,32 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace KILLER
 {
     public class Setting : MonoBehaviour
     {
-
+        public Dictionary<string, KeyCode> InputCollection = new Dictionary<string, KeyCode>();
         public GameObject[] go;
         public bool selected = false,isfull;
         [SerializeField]
-        Slider VolM, VolG;
+        Slider VolM, VolG, sens;
         [SerializeField]
         AudioMixer AudioMaster;
         [SerializeField]
-        TMPro.TMP_Text txtM,txtG;
+        TMPro.TMP_Text txtM,txtG, txtSens;
         [SerializeField]
         TMPro.TMP_Dropdown resolutionDrop, qualityDrop;
         [SerializeField]
         Toggle IsFullToggle;
         Resolution[] Resolutions;
+
+        public UnityEvent myevent;
+        public UnityEvent myCloseEvent;
+        public UnityEvent mySensEvent;
+
         public void Start()
         {
+            GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>().settingsWindow = gameObject;
+            if (myevent == null)
+                myevent = new UnityEvent();
+            if (myCloseEvent == null)
+                myCloseEvent = new UnityEvent();
+            if (mySensEvent == null)
+                mySensEvent = new UnityEvent();
+
+
             AudioMaster.SetFloat("MusicVolume", PlayerPrefs.GetInt("VolM"));
             txtM.text = PlayerPrefs.GetInt("VolM").ToString() + "%";
             AudioMaster.SetFloat("GameVolume", PlayerPrefs.GetInt("VolG"));
             txtG.text = PlayerPrefs.GetInt("VolG").ToString() + "%";
+            sens.value = PlayerPrefs.GetFloat("Sens");
+            txtSens.text = sens.value.ToString(); 
             QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("Quality"));
             qualityDrop.value = QualitySettings.GetQualityLevel();
             if(PlayerPrefs.GetInt("IsFull") == 1)
@@ -57,6 +74,10 @@ namespace KILLER
             resolutionDrop.AddOptions(options);
             resolutionDrop.value = tempIndex;
             SetVolumeValue(3);
+            mySensEvent.Invoke();
+            SetInputs();
+            DissUI(0);
+            gameObject.SetActive(false);
         }
         public void SetResolution(int resolutionIndex)
         {
@@ -109,9 +130,15 @@ namespace KILLER
 
             }
         }
+        public void SetSencivityValue()
+        {
+            txtSens.text = ((float)sens.value).ToString();
+            PlayerPrefs.SetFloat("Sens", (float)sens.value);
+            mySensEvent.Invoke();
+        }
         public void GetInputValue(string InputSearch)
         {
-            GameObject.Find(InputSearch).GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetString(InputSearch).ToString();
+            GameObject.Find(InputSearch).GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetString(InputSearch, GameObject.Find(InputSearch).GetComponent<TMPro.TMP_InputField>().text).ToString();
         }
         public void SetInputValue(string InputSearch)
         {
@@ -125,6 +152,26 @@ namespace KILLER
                 goD.SetActive(false);
             }
             go[index].SetActive(true);
+        }
+
+        public void SetInputs()
+        {
+            InputCollection.Clear();
+            foreach(InputFieldStartSC inputFieldStartSC in gameObject.transform.GetComponentsInChildren<InputFieldStartSC>())
+            {
+                InputCollection.Add(inputFieldStartSC.txt2.text, inputFieldStartSC.input);
+            }
+            myevent.Invoke();
+        }
+        public void Close()
+        {
+            myCloseEvent.Invoke();
+        }
+        public void Menu()
+        {
+            PhotonNetwork.Disconnect();
+            Destroy(GameObject.Find("Discord"));
+            PhotonNetwork.LoadLevel("Menu");
         }
     }
 }

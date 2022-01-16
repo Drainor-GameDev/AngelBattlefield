@@ -6,11 +6,12 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class roomScript : MonoBehaviour
 {
-    public GameObject locker, sc1,sc2, sc3;
+    public GameObject locker, sc1,sc2, sc3, startButton;
     public GameObject[] champs, profils, team1, team2;
     public Sprite[] sourceImages;
     AsyncOperation aO;
-    public bool ready = false, select = false, load = false;
+    public bool ready = false, select = false, load = false, forceStart = false;
+    public string levelToLoad;
     public void Start()
     {
         sc1.SetActive(true);
@@ -20,9 +21,11 @@ public class roomScript : MonoBehaviour
         Hashtable hash = new Hashtable();
         hash.Add("Ready", false);
         hash.Add("Loaded", false);
+        hash.Add("Forced", false);
         hash.Add("Champion", -1);
         hash.Add("Squad", 0);
         PhotonNetwork.player.SetCustomProperties(hash);
+        startButton.SetActive(PhotonNetwork.isMasterClient);
     }
     public void Update()
     {
@@ -31,10 +34,21 @@ public class roomScript : MonoBehaviour
             bool test = false;
             foreach (PhotonPlayer pla in PhotonNetwork.playerList)
             {
+                if ((bool)pla.CustomProperties["Forced"] == true && pla.IsMasterClient)
+                {
+                    PhotonNetwork.isMessageQueueRunning = false;
+                    if (!load)
+                    {
+                        load = true;
+                        sc3.SetActive(true);
+                        sc2.SetActive(false);
+                        StartCoroutine(LoadScenneWithDelay(3, levelToLoad));
+                    }
+                    break;
+                }
                 if ((bool)pla.CustomProperties["Ready"] == false && (int)pla.CustomProperties["Squad"] != 0)
                 {
                     test = true;
-                    break;
                 }
             }
             int players = 0;
@@ -45,13 +59,15 @@ public class roomScript : MonoBehaviour
                     players++;
                 }
             }
-            if (!test && players == PhotonNetwork.room.MaxPlayers)
+            if ((!test && players == PhotonNetwork.room.MaxPlayers) || forceStart)
             {
                 PhotonNetwork.isMessageQueueRunning = false;
                 if (!load)
                 {
                     load = true;
-                    StartCoroutine(LoadScenneWithDelay(3, "Map1"));
+                    sc3.SetActive(true);
+                    sc2.SetActive(false);
+                    StartCoroutine(LoadScenneWithDelay(3, levelToLoad));
                 }
             }
             int index = 0;
@@ -114,15 +130,26 @@ public class roomScript : MonoBehaviour
     {
         if (!ready)
         {
-            select = true;
-            foreach (GameObject go in champs)
+            bool test = false;
+            foreach (PhotonPlayer pla in PhotonNetwork.playerList)
             {
-                go.SetActive(false);
+                if ((int)pla.CustomProperties["Champion"] == champ && (int)pla.CustomProperties["Squad"] == (int)PhotonNetwork.player.CustomProperties["Squad"])
+                {
+                    test = true;
+                }
             }
-            champs[champ].SetActive(true);
-            Hashtable hash = new Hashtable();
-            hash.Add("Champion", champ);
-            PhotonNetwork.player.SetCustomProperties(hash);
+            if (!test)
+            {
+                select = true;
+                foreach (GameObject go in champs)
+                {
+                    go.SetActive(false);
+                }
+                champs[champ].SetActive(true);
+                Hashtable hash = new Hashtable();
+                hash.Add("Champion", champ);
+                PhotonNetwork.player.SetCustomProperties(hash);
+            }
         }
     }
     public void Ready()
@@ -149,17 +176,50 @@ public class roomScript : MonoBehaviour
         }
         else
         {
-            if(team == 1)
+            int playersTeam1 = 0,playersTeam2 = 0;
+            foreach (PhotonPlayer pla in PhotonNetwork.playerList)
+            {
+                if ((int)pla.CustomProperties["Squad"] == 1)
+                {
+                    playersTeam1++;
+                }
+                if ((int)pla.CustomProperties["Squad"] == 2)
+                {
+                    playersTeam2++;
+                }
+            }
+            if (team == 1 && playersTeam1 < 5)
             {
                 PhotonNetwork.player.SetTeam(PunTeams.Team.blue);
+                sc2.SetActive(true);
             }
-            else
+            else if (playersTeam2 < 5)
             {
                 PhotonNetwork.player.SetTeam(PunTeams.Team.red);
+                sc2.SetActive(true);
             }
-            sc2.SetActive(true);
         }
     }
+
+    public void ForceStart()
+    {
+        bool test = false;
+        foreach (PhotonPlayer pla in PhotonNetwork.playerList)
+        {
+            if ((int)pla.CustomProperties["Champion"] == -1)
+            {
+                test = true;
+            }
+        }
+        if (!test)
+        {
+            Hashtable hash = new Hashtable();
+            hash.Add("Forced", true);
+            PhotonNetwork.player.SetCustomProperties(hash);
+            forceStart = true;
+        }
+    }
+
     public IEnumerator LoadScenneWithDelay(int delay, string scenne)
     {
         yield return new WaitForSeconds(delay);

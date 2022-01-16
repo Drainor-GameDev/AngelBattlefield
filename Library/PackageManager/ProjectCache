@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637702598559299428
-    m_Hash: 1828719606
+      ticks: 637728247355605043
+    m_Hash: 891584910
   m_LockFileStatus:
     m_FilePath: F:/AngelBattlefield/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637702598560521803
-    m_Hash: 3997013928
+      ticks: 637728247357145238
+    m_Hash: 36707436
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -22,6 +22,60 @@ m_LocalPackages:
 m_ProjectPath: F:/AngelBattlefield/Packages
 m_EditorVersion: 2021.1.20f1 (be552157821d)
 m_ResolvedPackages:
+- packageId: com.unity.2d.sprite@1.0.0
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.0
+  source: 2
+  resolvedPath: F:\AngelBattlefield\Library\PackageCache\com.unity.2d.sprite@1.0.0
+  assetPath: Packages/com.unity.2d.sprite
+  name: com.unity.2d.sprite
+  displayName: 2D Sprite
+  author:
+    name: 
+    email: 
+    url: 
+  category: 2D
+  type: 
+  description: Use Unity Sprite Editor Window to create and edit Sprite asset properties
+    like pivot, borders and Physics shape
+  status: 4
+  errors: []
+  versions:
+    all:
+    - 1.0.0
+    compatible:
+    - 1.0.0
+    verified: 1.0.0
+  dependencies: []
+  resolvedDependencies: []
+  keywords:
+  - 2d
+  - sprite
+  - sprite editor window
+  registry:
+    id: 
+    name: 
+    url: 
+    scopes: []
+    isDefault: 0
+    capabilities: 0
+  hasRegistry: 0
+  hideInEditor: 1
+  entitlements:
+    isAllowed: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 1.0.0
+    nextVersion: 
 - packageId: com.unity.cinemachine@2.7.8
   testable: 0
   isDirectDependency: 1
@@ -83,25 +137,32 @@ m_ResolvedPackages:
     - 2.6.5
     - 2.6.9
     - 2.6.10
+    - 2.6.11
     - 2.7.1
     - 2.7.2
     - 2.7.3
     - 2.7.4
     - 2.7.5
     - 2.7.8
+    - 2.7.9
     - 2.8.0-exp.1
     - 2.8.0-exp.2
     - 2.8.0-pre.1
     - 2.8.0
     - 2.8.1
+    - 2.8.2
+    - 2.9.0-pre.1
     compatible:
     - 2.7.8
+    - 2.7.9
     - 2.8.0-exp.1
     - 2.8.0-exp.2
     - 2.8.0-pre.1
     - 2.8.0
     - 2.8.1
-    verified: 2.7.8
+    - 2.8.2
+    - 2.9.0-pre.1
+    verified: 2.7.9
   dependencies: []
   resolvedDependencies: []
   keywords:
@@ -267,9 +328,11 @@ m_ResolvedPackages:
     - 2.0.8
     - 2.0.9
     - 2.0.11
+    - 2.0.12
     compatible:
     - 2.0.11
-    verified: 2.0.11
+    - 2.0.12
+    verified: 2.0.12
   dependencies:
   - name: com.unity.test-framework
     version: 1.1.9
@@ -369,6 +432,200 @@ m_ResolvedPackages:
     path: 
   unityLifecycle:
     version: 1.2.3
+    nextVersion: 
+- packageId: com.unity.postprocessing@3.1.1
+  testable: 0
+  isDirectDependency: 1
+  version: 3.1.1
+  source: 1
+  resolvedPath: F:\AngelBattlefield\Library\PackageCache\com.unity.postprocessing@3.1.1
+  assetPath: Packages/com.unity.postprocessing
+  name: com.unity.postprocessing
+  displayName: Post Processing
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: The post-processing stack (v2) comes with a collection of effects
+    and image filters you can apply to your cameras to improve the visuals of your
+    games.
+  status: 4
+  errors: []
+  versions:
+    all:
+    - 0.1.7
+    - 0.1.8
+    - 2.0.0-beta
+    - 2.0.1-beta
+    - 2.0.2-preview
+    - 2.0.3-preview
+    - 2.0.5-preview
+    - 2.0.7-preview
+    - 2.0.8-preview
+    - 2.0.9-preview
+    - 2.0.10-preview
+    - 2.0.11-preview
+    - 2.0.12-preview
+    - 2.0.13-preview
+    - 2.0.14-preview
+    - 2.0.15-preview
+    - 2.0.16-preview
+    - 2.0.17-preview
+    - 2.1.0
+    - 2.1.1
+    - 2.1.2
+    - 2.1.3
+    - 2.1.4
+    - 2.1.5
+    - 2.1.6
+    - 2.1.7
+    - 2.2.1
+    - 2.2.2
+    - 2.3.0
+    - 3.0.1
+    - 3.0.3
+    - 3.1.0
+    - 3.1.1
+    - 3.2.0
+    compatible:
+    - 3.1.1
+    - 3.2.0
+    verified: 3.1.1
+  dependencies:
+  - name: com.unity.modules.physics
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.modules.physics
+    version: 1.0.0
+  keywords: []
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+  hasRegistry: 1
+  hideInEditor: 1
+  entitlements:
+    isAllowed: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 637576678760000000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: git+https://github.com/Unity-Technologies/Graphics.git
+    revision: 075b452f2c4bf910a168632b3cedbd6835477ddd
+    path: 
+  unityLifecycle:
+    version: 3.1.1
+    nextVersion: 
+- packageId: com.unity.recorder@2.5.7
+  testable: 0
+  isDirectDependency: 1
+  version: 2.5.7
+  source: 1
+  resolvedPath: F:\AngelBattlefield\Library\PackageCache\com.unity.recorder@2.5.7
+  assetPath: Packages/com.unity.recorder
+  name: com.unity.recorder
+  displayName: Unity Recorder
+  author:
+    name: 
+    email: 
+    url: 
+  category: 
+  type: 
+  description: 'The Unity Recorder allows you to capture and save data from the Unity
+    Editor during Play Mode: animations, videos, images, audio, and more.'
+  status: 4
+  errors: []
+  versions:
+    all:
+    - 2.0.0-preview.6
+    - 2.0.1-preview.1
+    - 2.0.2-preview.3
+    - 2.0.3-preview.1
+    - 2.1.0-preview.1
+    - 2.2.0-preview.4
+    - 2.3.0-preview.3
+    - 2.4.0-preview.1
+    - 2.5.0-pre.1
+    - 2.5.2
+    - 2.5.4
+    - 2.5.5
+    - 2.5.7
+    - 2.6.0-exp.3
+    - 2.6.0-exp.4
+    - 3.0.0-pre.1
+    - 3.0.0-pre.2
+    - 3.0.0
+    - 3.0.1
+    - 3.0.2
+    - 3.0.3
+    - 4.0.0-pre.1
+    - 4.0.0-pre.2
+    compatible:
+    - 2.5.5
+    - 2.5.7
+    - 2.6.0-exp.3
+    - 2.6.0-exp.4
+    - 3.0.0-pre.1
+    - 3.0.0-pre.2
+    - 3.0.0
+    - 3.0.1
+    - 3.0.2
+    - 3.0.3
+    - 4.0.0-pre.1
+    - 4.0.0-pre.2
+    verified: 2.5.7
+  dependencies:
+  - name: com.unity.timeline
+    version: 1.0.0
+  resolvedDependencies:
+  - name: com.unity.timeline
+    version: 1.5.6
+  - name: com.unity.modules.director
+    version: 1.0.0
+  - name: com.unity.modules.audio
+    version: 1.0.0
+  - name: com.unity.modules.animation
+    version: 1.0.0
+  - name: com.unity.modules.particlesystem
+    version: 1.0.0
+  keywords:
+  - unity
+  - recorder
+  - recording
+  - capture
+  - video
+  - animation
+  - clip
+  - images
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+  hasRegistry: 1
+  hideInEditor: 1
+  entitlements:
+    isAllowed: 1
+  isAssetStorePackage: 0
+  datePublishedTicks: 637717102070000000
+  documentationUrl: 
+  hasRepository: 1
+  repository:
+    type: git
+    url: https://github.cds.internal.unity3d.com/unity/com.unity.recorder.git
+    revision: a59deb20019b176e95dd8efa2f9b41b8e4a0bb96
+    path: 
+  unityLifecycle:
+    version: 2.5.5
     nextVersion: 
 - packageId: com.unity.render-pipelines.high-definition@11.0.0
   testable: 0
@@ -922,6 +1179,7 @@ m_ResolvedPackages:
     - 2.1.5
     - 2.1.6
     - 2.2.0-preview.1
+    - 2.2.0-preview.2
     - 3.0.0-preview.1
     - 3.0.0-preview.3
     - 3.0.0-preview.4
@@ -940,9 +1198,12 @@ m_ResolvedPackages:
     - 3.0.5
     - 3.0.6
     - 3.2.0-pre.1
+    - 3.2.0-pre.2
+    - 4.0.0-pre.1
     compatible:
     - 3.0.6
     - 3.2.0-pre.1
+    - 3.2.0-pre.2
     verified: 3.0.6
   dependencies:
   - name: com.unity.ugui
@@ -1063,21 +1324,27 @@ m_ResolvedPackages:
     - 1.5.4
     - 1.5.5
     - 1.5.6
+    - 1.5.7
     - 1.6.0-pre.1
     - 1.6.0-pre.3
     - 1.6.0-pre.4
     - 1.6.0-pre.5
     - 1.6.1
     - 1.6.2
+    - 1.6.3
+    - 1.7.0-pre.1
     compatible:
     - 1.5.6
+    - 1.5.7
     - 1.6.0-pre.1
     - 1.6.0-pre.3
     - 1.6.0-pre.4
     - 1.6.0-pre.5
     - 1.6.1
     - 1.6.2
-    verified: 1.5.6
+    - 1.6.3
+    - 1.7.0-pre.1
+    verified: 1.5.7
   dependencies:
   - name: com.unity.modules.director
     version: 1.0.0
@@ -3270,9 +3537,26 @@ m_ResolvedPackages:
   errors: []
   versions:
     all:
+    - 4.0.0-preview
+    - 4.0.0
+    - 4.0.7-preview
+    - 4.0.7
+    - 4.0.8-preview
+    - 4.0.9
+    - 4.1.0-preview
+    - 4.1.0
+    - 4.2.0
+    - 4.3.0
+    - 4.3.1
     - 4.3.2
+    - 4.6.0-preview
+    - 4.7.0-preview
+    - 4.9.1
     compatible:
     - 4.3.2
+    - 4.6.0-preview
+    - 4.7.0-preview
+    - 4.9.1
     verified: 4.3.2
   dependencies: []
   resolvedDependencies: []
@@ -3291,7 +3575,7 @@ m_ResolvedPackages:
   entitlements:
     isAllowed: 1
   isAssetStorePackage: 0
-  datePublishedTicks: 0
+  datePublishedTicks: 637509898070000000
   documentationUrl: 
   hasRepository: 1
   repository:
@@ -3460,6 +3744,46 @@ m_ResolvedPackages:
   errors: []
   versions:
     all:
+    - 7.0.0
+    - 7.0.1
+    - 7.1.1
+    - 7.1.2
+    - 7.1.5
+    - 7.1.6
+    - 7.1.7
+    - 7.1.8
+    - 7.2.0
+    - 7.2.1
+    - 7.3.1
+    - 7.4.1
+    - 7.4.2
+    - 7.4.3
+    - 7.5.1
+    - 7.5.2
+    - 7.5.3
+    - 7.6.0
+    - 7.7.0
+    - 7.7.1
+    - 8.0.1
+    - 8.1.0
+    - 8.2.0
+    - 8.3.1
+    - 9.0.0-preview.15
+    - 9.0.0-preview.35
+    - 9.0.0-preview.57
+    - 9.0.0-preview.74
+    - 10.0.0-preview.27
+    - 10.1.0
+    - 10.2.0
+    - 10.2.1
+    - 10.2.2
+    - 10.3.1
+    - 10.3.2
+    - 10.4.0
+    - 10.5.0
+    - 10.5.1
+    - 10.6.0
+    - 10.7.0
     - 11.0.0
     compatible:
     - 11.0.0

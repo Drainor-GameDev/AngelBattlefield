@@ -6,9 +6,10 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Movement : MonoBehaviour
 {
+    Dictionary<string, KeyCode> Inputs = new Dictionary<string, KeyCode>();
     [SerializeField]
     Vector3 shieldSize;
-    public Image ultimateImg,AImg,EImg, HpImg, profileImg;
+    public Image ultimateImg,AImg,EImg, HpImg, profileImg, healthRed, headRed;
     public TMPro.TMP_Text ultimateTxt, HpTxt;
     public int hp, bhp, maxhp, ultimateCharge,squad, ultimateChargeSpeed;
     public bool dead, delay, invincible, sendBack;
@@ -16,7 +17,7 @@ public class Movement : MonoBehaviour
     float rotationX;
     public bool canMove;
     public float lookSpeed, lookXLimit;
-    public GameObject playerCamera, projectilePrefab, origin, body, canvas, tentacleEffect1, tentacleEffect2, personalCanvas,groundDetect, shieldImg;
+    public GameObject playerCamera, projectilePrefab, origin, body, canvas, tentacleEffect1, tentacleEffect2, personalCanvas,groundDetect, shieldImg, hitImg, nameText;
     public float bSpeed, speed, runSpeed,bRunSpeed;
     private float gravity = -5.81f;
     public bool isGrounded = false, aSpell,eSpell;
@@ -25,8 +26,12 @@ public class Movement : MonoBehaviour
     private bool rea;
     public Color spellcolor;
     public Sprite profile, AspellDmg, AspellHeal, Aback;
-    public string Projectile = "Torch";
+    public string Projectile = "Arrow1";
     public int Armor;
+    GameObject settings;
+    float conteur = 0, conteur2 = 0;
+    public AudioSource audioSource;
+    public AudioClip killSoundEffect;
 
     public enum Spell
     {
@@ -55,11 +60,12 @@ public class Movement : MonoBehaviour
         pv = GetComponent<PhotonView>();
         if (pv.isMine)
         {
+            StartCoroutine(DelayStart());
             groundDetect.SetActive(true);
             personalCanvas.SetActive(true);
             gameObject.layer = 2;
             gameObject.transform.name = "local";
-            GameObject.Find("Main Camera").GetComponent<Manager>().player = gameObject;
+            GameObject.Find("Manager").GetComponent<Manager>().player = gameObject;
             Hashtable hash = new Hashtable();
             hash.Add("Death", 0);
             hash.Add("Kill", 0);
@@ -69,19 +75,38 @@ public class Movement : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             profileImg.sprite = profile;
+            nameText.SetActive(false);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (pv.isMine)
+        if (pv.isMine && Inputs != null)
         {
+            Vector3 move = new Vector3();
+            if (hitImg.transform.localScale.x > 0 && conteur < Time.time)
+            {
+                conteur = Time.time + 0.0001f;
+                hitImg.transform.localScale = new Vector2(hitImg.transform.localScale.x - 0.1f, hitImg.transform.localScale.y - 0.1f);
+            }
+            if (headRed.transform.localScale.x > 0 && conteur2 < Time.time)
+            {
+                conteur2 = Time.time + 0.0001f;
+                headRed.transform.localScale = new Vector2(headRed.transform.localScale.x - 0.1f, headRed.transform.localScale.y - 0.1f);
+            }
+            if (hp < bhp / 4)
+            {
+                healthRed.color = new Color(255, 0, 0, (float)Mathf.Cos(Time.time * 2));
+            }
+            else
+            {
+                healthRed.color = new Color(255, 0, 0, 0);
+            }
             if(hp > maxhp)
             {
                 hp = maxhp;
             }
-            print(90f - 90f * (Armor / 100f));
             if (delay)
             {
                 StartCoroutine(UltimateChargeDelay());
@@ -91,8 +116,11 @@ public class Movement : MonoBehaviour
             HpTxt.text = hp.ToString();
             HpImg.fillAmount = (float)hp / maxhp;
             shieldImg.SetActive(invincible);
-            
-            if (Input.GetButton("Sprint"))
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                CloseSettings();
+            }
+            if (Input.GetKey(Inputs["Run"]))
             {
                 speed = runSpeed;
                 animBow.SetBool("run", true);
@@ -104,9 +132,19 @@ public class Movement : MonoBehaviour
                 animBow.SetBool("run", false);
                 animChar.SetBool("run", false);
             }
+            if (Input.GetKey(Inputs["Jump"]) && canMove)
+            {
+                if (isGrounded)
+                {
+                    velocity.y = Mathf.Sqrt(1.5f * -2f * gravity);
+                    //anim.SetBool("jump", true);
+                }
+            }
+            velocity.y += -5.81f * Time.deltaTime;
+            GetComponent<CharacterController>().Move(velocity * Time.deltaTime);
             if (canMove)
             {
-                if (Input.GetButton("Up"))
+                if (Input.GetKey(Inputs["Forward"]))
                 {
                     animBow.SetBool("walk", true);
                     animChar.SetBool("walk", true);
@@ -116,32 +154,44 @@ public class Movement : MonoBehaviour
                     animBow.SetBool("walk", false);
                     animChar.SetBool("walk", false);
                 }
-                if (Input.GetButtonDown("Jump"))
+                
+                
+                float x = 0;
+                if (Input.GetKey(Inputs["Forward"]))
                 {
-                    if (isGrounded)
-                    {
-                        velocity.y = Mathf.Sqrt(1.5f * -2f * gravity);
-                        //anim.SetBool("jump", true);
-                    }
+                    x = 1;
                 }
-                velocity.y += -5.81f * Time.deltaTime;
-                GetComponent<CharacterController>().Move(velocity * Time.deltaTime);
-                float z = Input.GetAxis("Vertical");
-                float x = Input.GetAxis("Horizontal");
-                Vector3 move = transform.right * x + transform.forward * z;
+                else if (Input.GetKey(Inputs["Backward"]))
+                {
+                    x = -1;
+                }
+
+                float z = 0;
+                if (Input.GetKey(Inputs["Left"]))
+                {
+                    z = -1;
+                }
+                else if (Input.GetKey(Inputs["Right"]))
+                {
+                    z = 1;
+                }
+                
+                move = transform.right * z + transform.forward * x;
+                move.Normalize();
                 rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
                 rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
                 playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
                 transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
                 move = move.normalized;
-                GetComponent<CharacterController>().Move(move * speed * Time.deltaTime);
+                
                 if (Input.GetButton("Fire1"))
                 {
                     animBow.SetBool("attack", true);
                     animChar.SetBool("attack", true);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.A) && aSpell)
+            GetComponent<CharacterController>().Move(move * speed * Time.deltaTime);
+            if (Input.GetKey(Inputs["Spell1"]) && aSpell)
             {
                 aSpell = false;
                 AImg.color = Color.gray;
@@ -153,31 +203,8 @@ public class Movement : MonoBehaviour
                         StartCoroutine(BoolDelay(0, 15f));
                         break;
                     case Spell.BlessedArrow:
-                        if(Projectile == "Torch")
-                        {
-                            Projectile = "TorchHeal";
-                            foreach(Image image in AImg.GetComponentsInChildren<Image>())
-                            {
-                                if (image.transform.gameObject != AImg)
-                                {
-                                    image.sprite = AspellDmg;
-                                }
-                            }
-                            AImg.sprite = Aback;
-                        }
-                        else
-                        {
-                            Projectile = "Torch";
-                            foreach (Image image in AImg.GetComponentsInChildren<Image>())
-                            {
-                                if (image.transform != AImg)
-                                {
-                                    image.sprite = AspellHeal;
-                                }
-                            }
-                            AImg.sprite = Aback;
-                        }
-                        StartCoroutine(BoolDelay(0, 1f));
+                        Projectile = "Arrow2";
+                        StartCoroutine(BoolDelay(0, 18f));
                         break;
                     case Spell.LastHope:
                         foreach (GameObject pla in GameObject.FindGameObjectsWithTag("Player"))
@@ -198,7 +225,7 @@ public class Movement : MonoBehaviour
                         break;
                 }
             }
-            if (Input.GetKeyDown(KeyCode.E) && eSpell)
+            if (Input.GetKey(Inputs["Spell2"]) && eSpell)
             {
                 eSpell = false;
                 EImg.color = Color.gray;
@@ -211,19 +238,9 @@ public class Movement : MonoBehaviour
                         tentacleEffect2.SetActive(true);
                         break;
                     case Spell.BackToThePast:
-                        if(ETP == Vector3.zero)
-                        {
-                            ETP = transform.position;
-                            StartCoroutine(BoolDelay(1, 1f));
-                        }
-                        else
-                        {
-                            GetComponent<CharacterController>().enabled = false;
-                            transform.position = ETP;
-                            GetComponent<CharacterController>().enabled = true;
-                            ETP = Vector3.zero;
-                            StartCoroutine(BoolDelay(1, 13f));
-                        }
+                        velocity.y = Mathf.Sqrt(-20f * gravity);
+                        GetComponent<CharacterController>().Move(velocity * Time.deltaTime);
+                        StartCoroutine(BoolDelay(1, 25f));
                         break;
                     case Spell.HeavenGift:
                         PhotonNetwork.Instantiate("MagePotion", transform.position, Quaternion.identity, 0);
@@ -242,7 +259,7 @@ public class Movement : MonoBehaviour
                         break;
                 }
             }
-            if (Input.GetKeyDown(KeyCode.R) && ultimateCharge >= 100)
+            if (Input.GetKey(Inputs["Ultimate"]) && ultimateCharge >= 100)
             {
                 switch (spellUltimate)
                 {
@@ -317,7 +334,7 @@ public class Movement : MonoBehaviour
     public IEnumerator ResDelay()
     {
         yield return new WaitForSeconds(3f);
-        GameObject.Find("Main Camera").GetComponent<Manager>().Inst((int)PhotonNetwork.player.CustomProperties["Squad"] - 1);
+        GameObject.Find("Manager").GetComponent<Manager>().Inst((int)PhotonNetwork.player.CustomProperties["Squad"] - 1);
     }
     public IEnumerator GhostDelay(float cd)
     {
@@ -434,6 +451,7 @@ public class Movement : MonoBehaviour
     [PunRPC]
     public void AddPoint()
     {
+        Kill();
         int killScore = (int)PhotonNetwork.player.CustomProperties["Kill"];
         killScore++;
         Hashtable hash = new Hashtable();
@@ -474,5 +492,58 @@ public class Movement : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         invincible = false;
+    }
+    public void UpdateDic()
+    {
+        Inputs = settings.GetComponent<KILLER.Setting>().InputCollection;
+    }
+    public void CloseSettings()
+    {
+        if (settings.active == true)
+        {
+            settings.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            canMove = true;
+        }
+        else
+        {
+            settings.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            canMove = false;
+        }
+    }
+    public void HitMark()
+    {
+        hitImg.transform.localScale = new Vector2(hitImg.transform.localScale.x + 3, hitImg.transform.localScale.y + 3);
+    }
+    public void Kill()
+    {
+        headRed.transform.localScale = new Vector2(headRed.transform.localScale.x + 3, headRed.transform.localScale.y + 3);
+        audioSource.PlayOneShot(killSoundEffect);
+    }
+    public void SensSet()
+    {
+        lookSpeed = PlayerPrefs.GetFloat("Sens");
+    }
+    public void SetColor(bool ally, string name)
+    {
+        if (ally) { nameText.GetComponentInChildren<TMPro.TMP_Text>().color = Color.blue; }
+        else { nameText.GetComponentInChildren<TMPro.TMP_Text>().color = Color.red; }
+        nameText.GetComponentInChildren<TMPro.TMP_Text>().text = name;
+    }
+    public IEnumerator DelayStart()
+    {
+        yield return new WaitForSeconds(1f);
+        settings = GameObject.Find("PlayFabManager").GetComponent<KILLER.PlayFabManager>().settingsWindow;
+        settings.GetComponent<KILLER.Setting>().myevent.AddListener(UpdateDic);
+        settings.GetComponent<KILLER.Setting>().myCloseEvent.AddListener(CloseSettings);
+        settings.GetComponent<KILLER.Setting>().mySensEvent.AddListener(SensSet);
+        Inputs = settings.GetComponent<KILLER.Setting>().InputCollection;
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            player.GetComponent<Movement>().SetColor((int)player.GetComponent<PhotonView>().owner.CustomProperties["Squad"] == (int)PhotonNetwork.player.CustomProperties["Squad"], player.GetComponent<PhotonView>().owner.NickName);
+        }
     }
 }

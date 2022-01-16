@@ -95,6 +95,7 @@
 -define:ENABLE_LEGACY_INPUT_MANAGER
 -define:ENABLE_PLAYFABSERVER_API
 -define:ENABLE_PLAYFABADMIN_API
+-define:UNITY_POST_PROCESSING_STACK_V2
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
 -r:"Assets/Plugins/Photon3Unity3D.dll"
@@ -282,6 +283,9 @@
 -r:"Library/Bee/artifacts/500b0aP.dag/Assembly-CSharp-firstpass.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Cinemachine.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/PlayFab.ref.dll"
+-r:"Library/Bee/artifacts/500b0aP.dag/Unity.Postprocessing.Runtime.ref.dll"
+-r:"Library/Bee/artifacts/500b0aP.dag/Unity.Recorder.Base.ref.dll"
+-r:"Library/Bee/artifacts/500b0aP.dag/Unity.Recorder.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Unity.RenderPipelines.Core.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Unity.RenderPipelines.Core.ShaderLibrary.ref.dll"
 -r:"Library/Bee/artifacts/500b0aP.dag/Unity.RenderPipelines.HighDefinition.Config.Runtime.ref.dll"
@@ -301,6 +305,14 @@
 "Assets/Discord-RPC/DiscordRpc.cs"
 "Assets/Discord-RPC/DiscordTime.cs"
 "Assets/Discord-RPC/PresenceManager.cs"
+"Assets/Effects/EffectExamples/Shared/Scripts/DecalDestroyer.cs"
+"Assets/Effects/EffectExamples/Shared/Scripts/ExtinguishableFire.cs"
+"Assets/Effects/EffectExamples/Shared/Scripts/GunAim.cs"
+"Assets/Effects/EffectExamples/Shared/Scripts/GunShoot.cs"
+"Assets/Effects/EffectExamples/Shared/Scripts/ParticleCollision.cs"
+"Assets/Effects/EffectExamples/Shared/Scripts/ParticleExamples.cs"
+"Assets/Effects/EffectExamples/Shared/Scripts/ParticleMenu.cs"
+"Assets/Effects/EffectExamples/TutorialInfo/Scripts/Readme.cs"
 "Assets/Effects/ForceShield/Script/LaserBullet.cs"
 "Assets/Effects/ForceShield/Script/ShieldCollision.cs"
 "Assets/Effects/ForceShield/Script/UserControl.cs"
@@ -313,7 +325,12 @@
 "Assets/Effects/PinwheelFantasyEffect/Script/Fireball.cs"
 "Assets/Effects/PinwheelFantasyEffect/Script/Spin.cs"
 "Assets/Effects/PinwheelFantasyEffect/Script/Test.cs"
+"Assets/Enemy.cs"
+"Assets/IA.cs"
 "Assets/LogoScenne/logoAudio.cs"
+"Assets/LookAtLocal.cs"
+"Assets/Models/Fantasy Monster(wizard) Demo/Environment/Scripts/CamCTRLDemo.cs"
+"Assets/Models/Fantasy Monster(wizard) Demo/Environment/Scripts/MoveCTRLDemo.cs"
 "Assets/Photon Unity Networking/Demos/Demo2DJumpAndRunWithPhysics/Scripts/Demo2DJumpAndRun.cs"
 "Assets/Photon Unity Networking/Demos/Demo2DJumpAndRunWithPhysics/Scripts/JumpAndRunMovement.cs"
 "Assets/Photon Unity Networking/Demos/DemoBoxes/ColorPerPlayer.cs"
@@ -472,6 +489,7 @@
 "Assets/Scripts/Lobby.cs"
 "Assets/Scripts/Manager.cs"
 "Assets/Scripts/Movement.cs"
+"Assets/Scripts/PartyManager.cs"
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/PlayFabManager.cs"
 "Assets/Scripts/PotionScript.cs"

@@ -106,6 +106,8 @@
 -define:ENABLE_LEGACY_INPUT_MANAGER
 -define:ENABLE_PLAYFABSERVER_API
 -define:ENABLE_PLAYFABADMIN_API
+-define:UNITY_POST_PROCESSING_STACK_V2
+-define:CINEMACHINE_POST_PROCESSING_V2
 -define:CINEMACHINE_TIMELINE
 -define:CINEMACHINE_HDRP
 -define:CINEMACHINE_HDRP_7_3_1
@@ -117,6 +119,7 @@
 -define:CINEMACHINE_UNITY_IMGUI
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
+-r:"Assets/Effects/EffectExamples/Editor/PackageManagerAssembly/PackageManagerAssembly.dll"
 -r:"Assets/Plugins/Photon3Unity3D.dll"
 -r:"Assets/Plugins/WebSocket/websocket-sharp.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2021.1.20f1/Editor/Data/Managed/UnityEditor.Graphs.dll"
@@ -318,6 +321,8 @@
 -r:"F:/AngelBattlefield/Library/PackageCache/com.unity.cinemachine@2.7.8/Runtime/ThirdParty/clipper_library.dll"
 -r:"F:/AngelBattlefield/Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Cinemachine.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Postprocessing.Editor.ref.dll"
+-r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.Postprocessing.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.RenderPipelines.Core.Editor.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.RenderPipelines.Core.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/500b0aEDbg.dag/Unity.RenderPipelines.HighDefinition.Editor.ref.dll"

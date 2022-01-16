@@ -48,6 +48,7 @@ public class Fire : MonoBehaviour
     {
         GetComponent<Animator>().SetBool("attack", false);
         GameObject go = PhotonNetwork.Instantiate(player.GetComponent<Movement>().Projectile, origin.transform.position, origin.transform.rotation, 0);
+        player.GetComponent<Movement>().Projectile = "Arrow1";
         go.GetComponent<projectile>().pla = player;
     }
     public void OnTriggerStay(Collider other)
@@ -78,6 +79,7 @@ public class Fire : MonoBehaviour
                             }
                         }
                         other.GetComponent<PhotonView>().RPC("res", PhotonPlayer.Find(other.GetComponent<PhotonView>().viewID), Damage, PhotonNetwork.player.ID, (int)PhotonNetwork.player.CustomProperties["Squad"], 0, false, false, percentageHp);
+                        GameObject.Find("local").GetComponent<Movement>().HitMark();
                         Damage = BDamage;
                         percentageHp = 0;
                         GameObject.Find("local").GetComponent<Movement>().ultimateCharge += 4 - GameObject.Find("local").GetComponent<Movement>().ultimateChargeSpeed;
@@ -103,6 +105,7 @@ public class Fire : MonoBehaviour
                 hit.transform.gameObject.GetComponent<PhotonView>().RPC("res", PhotonPlayer.Find(hit.transform.gameObject.GetComponent<PhotonView>().viewID), Damage, PhotonNetwork.player.ID, (int)PhotonNetwork.player.CustomProperties["Squad"], -5, false, false,0);
                 PhotonNetwork.Instantiate("MageAttackEffect", hit.point, Quaternion.identity, 0);
                 GameObject.Find("local").GetComponent<Movement>().ultimateCharge += 4 - GameObject.Find("local").GetComponent<Movement>().ultimateChargeSpeed;
+                GameObject.Find("local").GetComponent<Movement>().HitMark();
 
             }
         }

@@ -18,6 +18,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Room.unity
     guid: b0e0360dab8650b49806a665b6639739
   - enabled: 1
+    path: Assets/Scenes/CoopRoom.unity
+    guid: 1545e93f5c4d13d4d9e4e18813c2322f
+  - enabled: 1
     path: Assets/Scenes/Map1.unity
     guid: abf7c2fbf25c5d34593006f1e48f9eda
+  - enabled: 1
+    path: Assets/Scenes/Map2.unity
+    guid: b94cac15a1c39d14e83269370386afe0
+  - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: 2b25bd9b03379fd46bad5bdef8a3526f
+  - enabled: 1
+    path: Assets/Scenes/CoopLvl1.unity
+    guid: 041942f706b62504b97ec4ae2b10f2b3
   m_configObjects: {}
