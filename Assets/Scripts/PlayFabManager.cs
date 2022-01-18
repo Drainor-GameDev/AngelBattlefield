@@ -149,7 +149,7 @@ namespace KILLER
             throw new NotImplementedException();
         }
 
-        public void AddXP(int xp)
+        public void AddXp(int xp)
         {
             Player_Xp += xp;
             while(Player_Xp >= 2000)
@@ -157,11 +157,16 @@ namespace KILLER
                 Player_Xp -= 2000;
                 Player_Lvl++;
             }
-            save();
+            StartCoroutine(SaveWithDelay());
         }
         #endregion
 
         #region SAVE
+        public IEnumerator SaveWithDelay()
+        {
+            yield return new WaitForSeconds(0.3f);
+            save();
+        }
         public void save()
         {
             //ReadStatScore2();
@@ -239,8 +244,9 @@ namespace KILLER
         {
             foreach (var item in result.Statistics)
             {
+                print(result.Statistics);
                 Player_Xp = result.Statistics[0].Value;
-                Player_Lvl = result.Statistics[2].Value;
+                Player_Lvl = result.Statistics[1].Value;
             }
         }
         private void Failed(PlayFabError err)

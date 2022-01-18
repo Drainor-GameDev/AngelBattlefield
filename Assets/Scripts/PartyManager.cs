@@ -15,7 +15,7 @@ namespace KILLER
         {
             if (end)
             {
-                GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>().AddXP(1000 * ((int)PhotonNetwork.player.CustomProperties["Kill"] / (int)PhotonNetwork.player.CustomProperties["Death"]));
+                GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>().AddXp(1250 + 125 * (int)PhotonNetwork.player.CustomProperties["Kill"]);
                 int kill1 = 0, kill2 = 0;
                 foreach (PhotonPlayer play in PhotonNetwork.playerList)
                 {
@@ -111,7 +111,7 @@ namespace KILLER
                 }
                 if (PhotonNetwork.masterClient.IsMasterClient)
                 {
-                    if (kill1 >= 30 || kill2 >= 30)
+                    if (kill1 >= 2 || kill2 >= 2)
                     {
                         Hashtable hash = new Hashtable();
                         hash.Add("ScoreSquad1", kill1);
