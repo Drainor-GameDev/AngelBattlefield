@@ -841,8 +841,8 @@ MonoBehaviour:
   webTab: {fileID: 0}
   contactTab: {fileID: 0}
   settingsTab: {fileID: 1668450693039178724}
-  txtnb: {fileID: 0}
-  txtroom: {fileID: 0}
+  txtName: {fileID: 0}
+  txtLvl: {fileID: 0}
   sl: {fileID: 0}
   pName: {fileID: 0}
   rName: {fileID: 0}
@@ -850,6 +850,9 @@ MonoBehaviour:
   roomTest: 0
   rm: 0
   pfm: {fileID: 0}
+  mapName: 
+  levelBar: {fileID: 0}
+  profilePicture: {fileID: 0}
 --- !u!114 &106238565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3574,9 +3577,9 @@ MonoBehaviour:
   LoadingTimeOut: 3
   Player_ID: 
   Player_DisplayName: 
-  Player_Lvl: 0
+  Player_Lvl: 1
   Player_Dollar: 0
-  Player_GradePoint: 0
+  Player_PPID: 1
   Player_Xp: 0
   inv: []
   friendList: []

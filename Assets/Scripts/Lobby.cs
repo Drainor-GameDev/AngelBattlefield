@@ -8,8 +8,8 @@ using UnityEngine.Video;
 public class Lobby : MonoBehaviour
 {
     public TMPro.TMP_Text newsTitle, newsBody, money;
-    public GameObject[] Friends;
-    public GameObject tab, content, FriendPref, searchTab, shopTab, webTab, contactTab, settingsTab;
+    public List<GameObject> Friends, PPs;
+    public GameObject tab, content, PPcontent, FriendPref, ProfilePref, searchTab, shopTab, inventoryTab, webTab, contactTab, settingsTab;
     public TMPro.TMP_Text txtName, txtLvl;
     public Slider sl;
     public InputField pName, rName;
@@ -17,24 +17,21 @@ public class Lobby : MonoBehaviour
     public byte rm;
     public KILLER.PlayFabManager pfm;
     public string mapName;
+    public Image levelBar, profilePicture;
 
     // Start is called before the first frame update
     void Start()
     {
         settingsTab.GetComponent<KILLER.Setting>().myCloseEvent.AddListener(SettingsTab);
         pfm = GameObject.Find("PlayFabManager").GetComponent<KILLER.PlayFabManager>();
-        pfm.ReadTitleNews();
+        pfm.ReadTitleNews(actualiseTitle);
         pfm.GetInventory();
         pfm.GetFriends();
         PhotonNetwork.ConnectUsingSettings("Alpha1.2"); 
-        StartCoroutine(delay());
         txtName.text = pfm.Player_DisplayName;
         txtLvl.text = "Level: " + pfm.Player_Lvl.ToString();
-    }
-    public IEnumerator delay()
-    {
-        yield return new WaitForSeconds(0.5f);
-        actualiseTitle();
+        levelBar.fillAmount = (float)pfm.Player_Xp / 2000f;
+        profilePicture.sprite = Resources.Load<Sprite>("PP/" + pfm.Player_PPID);
     }
     public void RejRoom(int room = 0)
     {
@@ -101,14 +98,24 @@ public class Lobby : MonoBehaviour
             pfm.GetFriends();
             int count = 0;
             tab.SetActive(true);
+            content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
             foreach (PlayFab.ClientModels.FriendInfo friends in pfm.friendList)
             {
                 content.GetComponent<RectTransform>().sizeDelta = new Vector2(content.GetComponent<RectTransform>().sizeDelta.x, content.GetComponent<RectTransform>().sizeDelta.y + 54.56943f);
                 print(friends.Profile.LastLogin);
                 GameObject go = Instantiate(FriendPref, content.transform);
-                Friends.SetValue(go, count);
+                Friends.Add(go);
                 count++;
-                go.GetComponent<KILLER.FriendCardScript>().InitializeComponent(friends.Profile.Statistics[2].Value, friends.Profile.DisplayName, friends.Profile.PlayerId);
+                int room = 0;
+                int PPID = 0;
+                foreach(var item in friends.Profile.Statistics)
+                {
+                    if (item.Name == "room")
+                        room = item.Value;
+                    if (item.Name == "PpId")
+                        PPID = item.Value;
+                }
+                go.GetComponent<KILLER.FriendCardScript>().InitializeComponent(room, friends.Profile.DisplayName, friends.Profile.PlayerId, PPID);
             }
         }
     }
@@ -123,6 +130,7 @@ public class Lobby : MonoBehaviour
             searchTab.SetActive(true);
         }
     }
+
     public void ShopTab()
     {
         if (shopTab.active == true)
@@ -135,6 +143,27 @@ public class Lobby : MonoBehaviour
             shopTab.SetActive(true);
         }
     }
+
+    public void InventoryTab()
+    {
+        if (inventoryTab.active == true)
+        {
+            inventoryTab.SetActive(false);
+        }
+        else
+        {
+            inventoryTab.SetActive(true);
+            if (PPs.Count == 0)
+            {
+                for(int i = 1; i <= 45; i++)
+                {
+                    PPs.Add(Instantiate(ProfilePref, PPcontent.transform));
+                    PPs[i - 1].GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + i);
+                }
+            }
+        }
+    }
+
     public void AddFriend()
     {
         pfm.ADDFriend();

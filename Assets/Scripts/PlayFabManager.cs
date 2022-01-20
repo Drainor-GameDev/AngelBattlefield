@@ -22,7 +22,7 @@ namespace KILLER
         int LoadingTimeOut = 3;
 
         public string Player_ID, Player_DisplayName;
-        public int Player_Lvl, Player_Dollar, Player_GradePoint, Player_Xp;
+        public int Player_Lvl, Player_Dollar, Player_PPID, Player_Xp;
         public List<ItemInstance> inv;
         void Awake()
         {
@@ -127,10 +127,11 @@ namespace KILLER
                 DisplayPlayFabError
             );
         }
-        public void ReadTitleNews()
+        public void ReadTitleNews(Action action)
         {
             PlayFabClientAPI.GetTitleNews(new GetTitleNewsRequest(), result => {
                 news = result;
+                action();
                 // Process news using result.News
             }, error => Debug.LogError(error.GenerateErrorReport()));
         }
@@ -245,8 +246,10 @@ namespace KILLER
             foreach (var item in result.Statistics)
             {
                 print(result.Statistics);
-                Player_Xp = result.Statistics[0].Value;
-                Player_Lvl = result.Statistics[1].Value;
+                if (item.StatisticName == "xp")
+                    Player_Xp = item.Value;
+                if (item.StatisticName == "level")
+                    Player_Lvl = item.Value;
             }
         }
         private void Failed(PlayFabError err)

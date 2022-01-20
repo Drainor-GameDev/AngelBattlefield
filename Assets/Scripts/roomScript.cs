@@ -24,6 +24,7 @@ public class roomScript : MonoBehaviour
         hash.Add("Forced", false);
         hash.Add("Champion", -1);
         hash.Add("Squad", 0);
+        hash.Add("PPID", GameObject.Find("PlayFabManager").GetComponent<KILLER.PlayFabManager>().Player_PPID);
         PhotonNetwork.player.SetCustomProperties(hash);
         startButton.SetActive(PhotonNetwork.isMasterClient);
     }

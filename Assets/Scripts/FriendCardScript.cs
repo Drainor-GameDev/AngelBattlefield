@@ -1,19 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace KILLER
 {
     public class FriendCardScript : MonoBehaviour
     {
         public TMPro.TMP_Text nameText;
+        public Image PP;
         public int room;
         public string FriendID;
-        public void InitializeComponent(int roomInfo,string name,string ID)
+        public void InitializeComponent(int roomInfo,string name,string ID, int PpId)
         {
             room = roomInfo;
             nameText.text = name ;
             FriendID = ID;
+            PP.sprite = Resources.Load<Sprite>("PP/" + PpId);
         }
         public void JoinFriends()
         {

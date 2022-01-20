@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace KILLER
@@ -9,6 +10,7 @@ namespace KILLER
     {
         public bool end = false;
         public GameObject scoreBoard;
+        public Image[] PPteam1, PPteam2;
         public TMPro.TextMeshProUGUI txtPlayerSquad1, txtPlayerSquad2, txtKillSquad1, txtKillSquad2, txtDeathSquad1, txtDeathSquad2, txtChampSquad1, txtChampSquad2, txtKillsSquad1, txtKillsSquad2;
         public List<string> champs = new List<string>();
         public void Start()
@@ -37,10 +39,14 @@ namespace KILLER
                 txtDeathSquad2.text = null;
                 txtChampSquad1.text = null;
                 txtChampSquad2.text = null;
+                int team1 = 0, team2 = 0;
                 foreach (PhotonPlayer pla in PhotonNetwork.playerList)
                 {
                     if ((int)pla.CustomProperties["Squad"] == 1)
                     {
+                        PPteam1[team1].gameObject.SetActive(true);
+                        PPteam1[team1].sprite = Resources.Load<Sprite>("PP/" + pla.CustomProperties["PPID"]);
+                        team1++;
                         txtPlayerSquad1.text += pla.NickName;
                         txtKillSquad1.text += pla.CustomProperties["Kill"];
                         txtDeathSquad1.text += pla.CustomProperties["Death"];
@@ -48,6 +54,9 @@ namespace KILLER
                     }
                     else if ((int)pla.CustomProperties["Squad"] == 2)
                     {
+                        PPteam2[team2].gameObject.SetActive(true);
+                        PPteam2[team2].sprite = Resources.Load<Sprite>("PP/" + pla.CustomProperties["PPID"]);
+                        team2++;
                         txtPlayerSquad2.text += pla.NickName;
                         txtKillSquad2.text += pla.CustomProperties["Kill"];
                         txtDeathSquad2.text += pla.CustomProperties["Death"];
@@ -85,10 +94,14 @@ namespace KILLER
                     txtDeathSquad2.text = null;
                     txtChampSquad1.text = null;
                     txtChampSquad2.text = null;
+                    int team1 = 0, team2 = 0;
                     foreach (PhotonPlayer pla in PhotonNetwork.playerList)
                     {
                         if ((int)pla.CustomProperties["Squad"] == 1)
                         {
+                            PPteam1[team1].gameObject.SetActive(true);
+                            PPteam1[team1].sprite = Resources.Load<Sprite>("PP/" + pla.CustomProperties["PPID"]);
+                            team1++;
                             txtPlayerSquad1.text += pla.NickName;
                             txtKillSquad1.text += pla.CustomProperties["Kill"];
                             txtDeathSquad1.text += pla.CustomProperties["Death"];
@@ -96,6 +109,9 @@ namespace KILLER
                         }
                         else if ((int)pla.CustomProperties["Squad"] == 2)
                         {
+                            PPteam2[team2].gameObject.SetActive(true);
+                            PPteam2[team2].sprite = Resources.Load<Sprite>("PP/" + pla.CustomProperties["PPID"]);
+                            team2++;
                             txtPlayerSquad2.text += pla.NickName;
                             txtKillSquad2.text += pla.CustomProperties["Kill"];
                             txtDeathSquad2.text += pla.CustomProperties["Death"];

@@ -58,16 +58,19 @@ namespace KILLER
             playFabmanager.LoadingMessage("Initialize Statistics...");
             InitStat();
         }
-        private void InitStat()
+        private void InitStat(bool logged = false)
         {
             var request = new UpdatePlayerStatisticsRequest()
             {
                 Statistics = new List<StatisticUpdate>
                 {
-                    new StatisticUpdate {StatisticName="level", Value=1}
+                    new StatisticUpdate {StatisticName="level", Value=playFabmanager.Player_Lvl}
                 }
             };
-            PlayFabClientAPI.UpdatePlayerStatistics(request, InitStatSuccess, InitStatFailed);
+            if(logged)
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStatLoggedSuccess, InitStatFailed);
+            else
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStatSuccess, InitStatFailed);
 
         }
 
@@ -83,18 +86,26 @@ namespace KILLER
             playFabmanager.LoadingHide();
             InitStat1();
         }
-        private void InitStat1()
+        private void InitStatLoggedSuccess(UpdatePlayerStatisticsResult result)
+        {
+            playFabmanager.LoadingMessage("initstat1succes");
+            playFabmanager.LoadingHide();
+            InitStat1(true);
+        }
+
+        private void InitStat1(bool logged = false)
         {
             var request = new UpdatePlayerStatisticsRequest()
             {
                 Statistics = new List<StatisticUpdate>
                 {
-                    new StatisticUpdate {StatisticName="xp", Value=0}
+                    new StatisticUpdate {StatisticName="xp", Value=playFabmanager.Player_Xp}
                 }
             };
-
-            PlayFabClientAPI.UpdatePlayerStatistics(request, InitStat1Success, InitStat1Failed);
-
+            if(logged)
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStatLogged1Success, InitStat1Failed);
+            else
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStat1Success, InitStat1Failed);
         }
 
         private void InitStat1Failed(PlayFabError err)
@@ -109,7 +120,15 @@ namespace KILLER
             playFabmanager.LoadingHide();
             InitStat2();
         }
-        private void InitStat2()
+
+        private void InitStatLogged1Success(UpdatePlayerStatisticsResult result)
+        {
+            playFabmanager.LoadingMessage("initstat2succes");
+            playFabmanager.LoadingHide();
+            InitStat2(true);
+        }
+
+        private void InitStat2(bool logged = false)
         {
             var request = new UpdatePlayerStatisticsRequest()
             {
@@ -118,8 +137,10 @@ namespace KILLER
                     new StatisticUpdate {StatisticName="room", Value=0}
                 }
             };
-
-            PlayFabClientAPI.UpdatePlayerStatistics(request, InitStat2Success, InitStat2Failed);
+            if (logged)
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStatLogged2Success, InitStat2Failed);
+            else
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStat2Success, InitStat2Failed);
 
         }
 
@@ -133,8 +154,52 @@ namespace KILLER
         {
             playFabmanager.LoadingMessage("initstat3succes");
             playFabmanager.LoadingHide();
+            InitStat3();
+        }
+
+        private void InitStatLogged2Success(UpdatePlayerStatisticsResult result)
+        {
+            playFabmanager.LoadingMessage("initstat3succes");
+            playFabmanager.LoadingHide();
+            InitStat3(true);
+        }
+
+        private void InitStat3(bool logged = false)
+        {
+            var request = new UpdatePlayerStatisticsRequest()
+            {
+                Statistics = new List<StatisticUpdate>
+                {
+                    new StatisticUpdate {StatisticName="PpId", Value=playFabmanager.Player_PPID}
+                }
+            };
+            if (logged)
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStatLogged3Success, InitStat3Failed);
+            else
+                PlayFabClientAPI.UpdatePlayerStatistics(request, InitStat3Success, InitStat3Failed);
+
+        }
+
+        private void InitStat3Failed(PlayFabError err)
+        {
+            playFabmanager.LoadingMessage(err.ErrorMessage);
+            playFabmanager.LoadingHide();
+        }
+
+        private void InitStat3Success(UpdatePlayerStatisticsResult result)
+        {
+            playFabmanager.LoadingMessage("initstat3succes");
+            playFabmanager.LoadingHide();
             LoginPlayer();
         }
+
+        private void InitStatLogged3Success(UpdatePlayerStatisticsResult result)
+        {
+            playFabmanager.LoadingMessage("initstat3succes");
+            playFabmanager.LoadingHide();
+            LoadGame();
+        }
+
         public void LoginPlayer()
         {
             playFabmanager.LoadingMessage("Connecting server...");
@@ -197,8 +262,12 @@ namespace KILLER
         {
             foreach (var item in result.Statistics)
             {
-                playFabmanager.Player_Xp = result.Statistics[0].Value;
-                playFabmanager.Player_Lvl = result.Statistics[1].Value;
+                if (item.StatisticName == "xp")
+                    playFabmanager.Player_Xp = item.Value;
+                if (item.StatisticName == "level")
+                    playFabmanager.Player_Lvl = item.Value;
+                if (item.StatisticName == "PpId")
+                    playFabmanager.Player_PPID = item.Value;
             }
             //playFabmanager.Player_Score = result.Statistics[0].Value;
             playFabmanager.LoadingMessage("Loading Profil SuccessFull...");
@@ -220,14 +289,10 @@ namespace KILLER
                 {
                     playFabmanager.Player_Dollar = item.Value;
                 }
-                if (item.Key == "GP")
-                {
-                    playFabmanager.Player_GradePoint = item.Value;
-                }
             }
 
             playFabmanager.LoadingMessage("Loading Currency Successfull");
-            LoadGame();
+            InitStat(true);
         }
         private void InventoryFailed(PlayFabError err)
         {
