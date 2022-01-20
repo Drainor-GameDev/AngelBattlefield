@@ -28,12 +28,15 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
+  - AddPoint
   - Chat
   - ColorRpc
   - DestroyRpc
   - DoJump
+  - EndGame
   - Flash
   - InstantiateRpc
+  - Look
   - Marco
   - PickupItemInit
   - Polo
@@ -42,12 +45,7 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
-  - TaggedPlayer
-  - AddPoint
   - res
-  - Look
-  - OnPhotonPlayerConnected
   - SummonShield
-  - SpawnOnNetwork
-  - EndGame
+  - TaggedPlayer
   DisableAutoOpenWizard: 1
