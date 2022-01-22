@@ -9,8 +9,11 @@ namespace KILLER
 	{
 	    public void changePP()
         {
-			GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>().Player_PPID = Int32.Parse(gameObject.name);
-			GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>().save();
+			PlayFabManager pfm = GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>();
+			Lobby lobby = GameObject.Find("Lobby").GetComponent<Lobby>();
+			pfm.Player_PPID = Int32.Parse(gameObject.name);
+			pfm.save();
+			lobby.profilePicture.sprite = Resources.Load<Sprite>("PP/" + pfm.Player_PPID);
 		}
 	}
 }

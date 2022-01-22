@@ -285,9 +285,9 @@ namespace KILLER
         {
             foreach (var item in result.VirtualCurrency)
             {
-                if (item.Key == "$$")
+                if (item.Key == "GO")
                 {
-                    playFabmanager.Player_Dollar = item.Value;
+                    playFabmanager.Player_Gold = item.Value;
                 }
             }
 
@@ -298,7 +298,6 @@ namespace KILLER
         {
             playFabmanager.LoadingMessage(err.ErrorMessage);
             playFabmanager.LoadingHide();
-
         }
         public void Quit()
         {

@@ -22,7 +22,7 @@ namespace KILLER
         int LoadingTimeOut = 3;
 
         public string Player_ID, Player_DisplayName;
-        public int Player_Lvl, Player_Dollar, Player_PPID, Player_Xp;
+        public int Player_Lvl, Player_Gold, Player_PPID, Player_Xp;
         public List<ItemInstance> inv;
         public List<StoreItem> store;
         void Awake()
@@ -131,6 +131,46 @@ namespace KILLER
             );
         }
 
+        public void GetCurencies(Action action)
+        {
+            PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest
+            { }, result =>
+            {
+                foreach (var item in result.VirtualCurrency)
+                {
+                    if (item.Key == "GO")
+                    {
+                        Player_Gold = item.Value;
+                    }
+                }
+                action();
+            },errorCallback =>
+            {
+                LoadingMessage(errorCallback.Error.ToString());
+                LoadingHide();
+            }
+            );
+        }
+
+        public void UseCode(string code, Action action, string catalog)
+        {
+            PlayFabClientAPI.RedeemCoupon(new RedeemCouponRequest
+            { 
+                CouponCode = code,
+                CatalogVersion = catalog
+            }, result =>
+            {
+                LoadingMessage("Code Used");
+                LoadingHide();
+                action();
+            }, errorCallback =>
+            {
+                LoadingMessage(errorCallback.Error.ToString());
+                LoadingHide();
+            }
+            );
+        }
+
         public void GetStore(string ID, int storePlace, Action action)
         {
             PlayFabClientAPI.GetStoreItems(new GetStoreItemsRequest
@@ -184,21 +224,39 @@ namespace KILLER
 
         public void MakePurchaseWithVC(string ID, string catalogID, int price)
         {
-            PlayFabClientAPI.PurchaseItem(new PurchaseItemRequest
+            bool test = true;
+            foreach(ItemInstance item in inv)
             {
-                ItemId = ID,
-                VirtualCurrency = "GO",
-                CatalogVersion = catalogID,
-                Price = price
-            }, result =>
-            {
-                LoadingMessage("Purchase succes");
-                LoadingHide();
-            }, errorCallback =>
-            {
-                DisplayPlayFabError(errorCallback);
+                if(item.ItemId == ID && item.CatalogVersion == catalogID)
+                {
+                    test = false;
+                    break;
+                }
             }
-            ); ;
+            if (test)
+            {
+                PlayFabClientAPI.PurchaseItem(new PurchaseItemRequest
+                {
+                    ItemId = ID,
+                    VirtualCurrency = "GO",
+                    CatalogVersion = catalogID,
+                    Price = price
+                }, result =>
+                {
+                    GetInventory();
+                    LoadingMessage("Purchase succes");
+                    LoadingHide();
+                }, errorCallback =>
+                {
+                    DisplayPlayFabError(errorCallback);
+                }
+                );
+            }
+            else
+            {
+                LoadingMessage("Already Bought");
+                LoadingHide();
+            }
         }
 
         #endregion

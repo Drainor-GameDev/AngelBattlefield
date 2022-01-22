@@ -9,8 +9,8 @@ using UnityEngine.Video;
 public class Lobby : MonoBehaviour
 {
     public TMPro.TMP_Text newsTitle, newsBody, money;
-    public List<GameObject> Friends, PPs, ShopWindows;
-    public GameObject tab, content, PPcontent, FriendPref, ProfilePref, ShopProfilePref, searchTab, shopTab, inventoryTab, webTab, contactTab, settingsTab, PPShopContent;
+    public List<GameObject> Friends, ShopWindows;
+    public GameObject tab, content, PPcontent, FriendPref, ProfilePref, ShopProfilePref, searchTab, shopTab, inventoryTab, codeTab, webTab, contactTab, settingsTab, PPShopContent;
     public TMPro.TMP_Text txtName, txtLvl;
     public Slider sl;
     public InputField pName, rName;
@@ -140,9 +140,14 @@ public class Lobby : MonoBehaviour
         }
         else
         {
-            money.text = pfm.Player_Dollar.ToString() + "$";
+            pfm.GetCurencies(ActualiseMoneyTxt);
             shopTab.SetActive(true);
         }
+    }
+
+    public void ActualiseMoneyTxt()
+    {
+        money.text = pfm.Player_Gold.ToString() + " Gold";
     }
 
     public void InventoryTab()
@@ -154,18 +159,39 @@ public class Lobby : MonoBehaviour
         else
         {
             inventoryTab.SetActive(true);
-            if (PPs.Count == 0)
-            {
-                for(int i = 1; i <= 45; i++)
-                {
-                    PPs.Add(Instantiate(ProfilePref, PPcontent.transform));
-                    PPs[i - 1].name = (i).ToString();
-                    PPs[i - 1].GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + i);
-                }
-            }
         }
     }
 
+    public void CodeTab()
+    {
+        if (codeTab.active == true)
+        {
+            codeTab.SetActive(false);
+        }
+        else
+        {
+            codeTab.SetActive(true);
+        }
+    }
+
+    public void UseCode()
+    {
+        pfm.UseCode(codeTab.GetComponentInChildren<TMPro.TMP_InputField>().text, CodeTab, codeTab.GetComponentInChildren<TMPro.TMP_Dropdown>().options[codeTab.GetComponentInChildren<TMPro.TMP_Dropdown>().value].text);
+    }
+
+    public void ActualiseInventory()
+    {
+        for (int i = 0; i < PPcontent.transform.childCount; i++)
+        {
+            Destroy(PPcontent.transform.GetChild(i).gameObject);
+        }
+        foreach (ItemInstance item in pfm.inv)
+        {
+            GameObject go = (Instantiate(ProfilePref, PPcontent.transform));
+            go.name = (item.ItemId).ToString();
+            go.GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + item.ItemId);
+        }
+    }
     public void AddFriend()
     {
         pfm.ADDFriend();
@@ -188,6 +214,7 @@ public class Lobby : MonoBehaviour
         {
             GameObject go = Instantiate(ShopProfilePref, PPShopContent.transform);
             go.name = pp.ItemId;
+            go.GetComponentInChildren<TMPro.TMP_Text>().text = pp.VirtualCurrencyPrices["GO"].ToString() + " Gold";
             go.GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + pp.ItemId);
         }
     }
