@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1481318750476427314}
   - component: {fileID: 6327423059208825039}
   - component: {fileID: 6833504054058264357}
+  - component: {fileID: 8402613725614555502}
   m_Layer: 5
   m_Name: PP
   m_TagString: Untagged
@@ -119,4 +120,28 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6327423059208825039}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8402613725614555502}
+        m_TargetAssemblyTypeName: KILLER.PPSC, Assembly-CSharp
+        m_MethodName: changePP
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8402613725614555502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844659753782142892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0cc6c5e92571d94db83bc1dc1d9dac4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

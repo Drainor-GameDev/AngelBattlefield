@@ -1,3 +1,4 @@
+using PlayFab.ClientModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +9,8 @@ using UnityEngine.Video;
 public class Lobby : MonoBehaviour
 {
     public TMPro.TMP_Text newsTitle, newsBody, money;
-    public List<GameObject> Friends, PPs;
-    public GameObject tab, content, PPcontent, FriendPref, ProfilePref, searchTab, shopTab, inventoryTab, webTab, contactTab, settingsTab;
+    public List<GameObject> Friends, PPs, ShopWindows;
+    public GameObject tab, content, PPcontent, FriendPref, ProfilePref, ShopProfilePref, searchTab, shopTab, inventoryTab, webTab, contactTab, settingsTab, PPShopContent;
     public TMPro.TMP_Text txtName, txtLvl;
     public Slider sl;
     public InputField pName, rName;
@@ -158,6 +159,7 @@ public class Lobby : MonoBehaviour
                 for(int i = 1; i <= 45; i++)
                 {
                     PPs.Add(Instantiate(ProfilePref, PPcontent.transform));
+                    PPs[i - 1].name = (i).ToString();
                     PPs[i - 1].GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + i);
                 }
             }
@@ -170,6 +172,35 @@ public class Lobby : MonoBehaviour
         FriendsTab();
         FriendsTab();
     }
+
+    public void ActualisePPStore()
+    {
+        pfm.GetStore("PPS", 0, ShowPPStore);
+    }
+
+    public void ShowPPStore()
+    {
+        for(int i = 0; i < PPShopContent.transform.childCount;i++)
+        {
+            Destroy(PPShopContent.transform.GetChild(i).gameObject);
+        }
+        foreach(StoreItem pp in pfm.store)
+        {
+            GameObject go = Instantiate(ShopProfilePref, PPShopContent.transform);
+            go.name = pp.ItemId;
+            go.GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + pp.ItemId);
+        }
+    }
+
+    public void OpenShopWindows(int ID)
+    {
+        foreach(GameObject go in ShopWindows)
+        {
+            go.SetActive(false);
+        }
+        ShopWindows[ID].SetActive(true);
+    }
+
     public void actualiseTitle()
     {
         foreach (var item in pfm.news.News)

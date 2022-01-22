@@ -493,6 +493,7 @@
 "Assets/Scripts/Player.cs"
 "Assets/Scripts/PlayFabManager.cs"
 "Assets/Scripts/PotionScript.cs"
+"Assets/Scripts/PPSC.cs"
 "Assets/Scripts/projectile.cs"
 "Assets/Scripts/roomScript.cs"
 "Assets/Scripts/Setting.cs"

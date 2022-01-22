@@ -24,6 +24,7 @@ namespace KILLER
         public string Player_ID, Player_DisplayName;
         public int Player_Lvl, Player_Dollar, Player_PPID, Player_Xp;
         public List<ItemInstance> inv;
+        public List<StoreItem> store;
         void Awake()
         {
 
@@ -43,7 +44,9 @@ namespace KILLER
             txtMessage = panel.GetComponentInChildren<TMPro.TMP_Text>();
 
         }
+
         #region UTILS
+
         public void LoadingHide()
         {
             StartCoroutine(Timer());
@@ -127,6 +130,24 @@ namespace KILLER
                 DisplayPlayFabError
             );
         }
+
+        public void GetStore(string ID, int storePlace, Action action)
+        {
+            PlayFabClientAPI.GetStoreItems(new GetStoreItemsRequest
+            {
+                StoreId = ID,
+                CatalogVersion = "PP"
+            }, result =>
+            {
+                print("StoreLoaded");
+                store = result.Store;
+                action();
+            },errorCallback =>
+            {
+                DisplayPlayFabError(errorCallback);
+            }
+            );;
+        }
         public void ReadTitleNews(Action action)
         {
             PlayFabClientAPI.GetTitleNews(new GetTitleNewsRequest(), result => {
@@ -160,9 +181,30 @@ namespace KILLER
             }
             StartCoroutine(SaveWithDelay());
         }
+
+        public void MakePurchaseWithVC(string ID, string catalogID, int price)
+        {
+            PlayFabClientAPI.PurchaseItem(new PurchaseItemRequest
+            {
+                ItemId = ID,
+                VirtualCurrency = "GO",
+                CatalogVersion = catalogID,
+                Price = price
+            }, result =>
+            {
+                LoadingMessage("Purchase succes");
+                LoadingHide();
+            }, errorCallback =>
+            {
+                DisplayPlayFabError(errorCallback);
+            }
+            ); ;
+        }
+
         #endregion
 
         #region SAVE
+
         public IEnumerator SaveWithDelay()
         {
             yield return new WaitForSeconds(0.3f);
@@ -207,8 +249,30 @@ namespace KILLER
         private void Success1(UpdatePlayerStatisticsResult obj)
         {
             //LoadingHide();
+            save2();
+        }
+
+        private void save2()
+        {
+            //LoadingMessage("save xp...");
+
+            var request = new UpdatePlayerStatisticsRequest
+            {
+                Statistics = new List<StatisticUpdate>
+                {
+                    new StatisticUpdate {StatisticName = "PpId", Value = Player_PPID}
+                }
+            };
+            PlayFabClientAPI.UpdatePlayerStatistics(request, Success2, Failed);
+        }
+
+
+        private void Success2(UpdatePlayerStatisticsResult obj)
+        {
+            //LoadingHide();
             ReadStatScore();
         }
+
         public void saveRoom()
         {
             //LoadingMessage("save xp...");
@@ -250,6 +314,8 @@ namespace KILLER
                     Player_Xp = item.Value;
                 if (item.StatisticName == "level")
                     Player_Lvl = item.Value;
+                if (item.StatisticName == "PpId")
+                    Player_PPID = item.Value;
             }
         }
         private void Failed(PlayFabError err)
@@ -257,11 +323,14 @@ namespace KILLER
             LoadingMessage(err.ErrorMessage);
             LoadingHide();
         }
+
         #endregion
+
+        #region Quit
 
         private void OnApplicationQuit()
         {
-            //LoadingMessage("save xp...");
+            LoadingMessage("Save room...");
 
             var request = new UpdatePlayerStatisticsRequest
             {
@@ -274,9 +343,13 @@ namespace KILLER
         }
         private void SuccessRoomQuit(UpdatePlayerStatisticsResult obj)
         {
-
+            LoadingMessage("Quit...");
         }
+
+        #endregion
+
         #region PAYPAL
+
         public void MakePurchase(string ID)
         {
             PlayFabClientAPI.StartPurchase(new StartPurchaseRequest()
@@ -290,12 +363,12 @@ namespace KILLER
             }
             }, result =>
             {
-                
                 // Handle success
                 ContinuePurchase(result.OrderId);
             }, error =>
             {
-                print(error.Error);
+                LoadingMessage(error.ErrorMessage);
+                LoadingHide();
                 // Handle error
             }); 
         }
@@ -311,7 +384,8 @@ namespace KILLER
                 // Handle success
                 FinishPurchase(ID);
             }, error => {
-                print(error.ErrorMessage);
+                LoadingMessage(error.ErrorMessage);
+                LoadingHide();
                 // Handle error
             });
         }
@@ -319,14 +393,15 @@ namespace KILLER
         {
             PlayFabClientAPI.ConfirmPurchase(new ConfirmPurchaseRequest()
             {
-                
                 OrderId = ID
             }, result => {
-                print("BG");
+                LoadingMessage("Achat terminé");
+                LoadingHide();
                 // Handle success
             }, error => {
                 // Handle error
-                print(error.Error);
+                LoadingMessage(error.ErrorMessage);
+                LoadingHide();
             });
         }
         #endregion
