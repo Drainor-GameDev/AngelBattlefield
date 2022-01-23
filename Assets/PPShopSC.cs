@@ -12,7 +12,7 @@ namespace KILLER
 			PlayFabManager pfm = GameObject.Find("PlayFabManager").GetComponent<PlayFabManager>();
 			Lobby lobby = GameObject.Find("Lobby").GetComponent<Lobby>();
 			int price = 600;
-			foreach(StoreItem item in pfm.store)
+			foreach(StoreItem item in pfm.store[0])
             {
 				if(item.ItemId == gameObject.name)
                 {

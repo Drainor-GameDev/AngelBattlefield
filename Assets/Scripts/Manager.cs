@@ -34,7 +34,7 @@ public class Manager : MonoBehaviour
             if (loaded == PhotonNetwork.room.PlayerCount)
             {
                 setPlayer = true;
-                GameObject go = PhotonNetwork.Instantiate("Player" + PhotonNetwork.player.CustomProperties["Champion"], spawns[(int)PhotonNetwork.player.CustomProperties["Squad"] - 1].transform.position, Quaternion.identity, 0);
+                GameObject go = PhotonNetwork.Instantiate("Player" + PhotonNetwork.player.CustomProperties["Champion"] + GameObject.Find("PlayFabManager").GetComponent<KILLER.PlayFabManager>().keysTab[(int)PhotonNetwork.player.CustomProperties["Champion"]+1], spawns[(int)PhotonNetwork.player.CustomProperties["Squad"] - 1].transform.position, Quaternion.identity, 0);
                 go.GetComponent<Movement>().playerCamera.SetActive(true);
             }
         }

@@ -21,10 +21,12 @@ namespace KILLER
         [SerializeField]
         int LoadingTimeOut = 3;
 
+        public string[] keysTab;
         public string Player_ID, Player_DisplayName;
-        public int Player_Lvl, Player_Gold, Player_PPID, Player_Xp;
+        public int Player_Lvl, Player_Gold, Player_PPID, Player_TitleID, Player_Xp;
         public List<ItemInstance> inv;
-        public List<StoreItem> store;
+        public List<StoreItem> PPStore, TitleStore, SkinStore;
+        public List<List<StoreItem>> store;
         void Awake()
         {
 
@@ -38,7 +40,7 @@ namespace KILLER
                 Destroy(gameObject);
             }
             DontDestroyOnLoad(gameObject);
-
+            store = new List<List<StoreItem>>() { { PPStore }, { TitleStore }, { SkinStore } };
 
             panel = transform.Find("CanvasLoading").Find("Panel").gameObject;
             txtMessage = panel.GetComponentInChildren<TMPro.TMP_Text>();
@@ -152,12 +154,57 @@ namespace KILLER
             );
         }
 
-        public void UseCode(string code, Action action, string catalog)
+        public void GetUserData(string searchedKey,int index)
+        {
+            PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+            {}, result => 
+            {
+                if (result.Data == null)
+                {
+
+                }
+                else if (!result.Data.ContainsKey(searchedKey))
+                {
+                    Debug.Log("No " + searchedKey);
+                    SetUserData(searchedKey, keysTab[index], index, delegate { GetUserData(searchedKey, index); });
+                }
+                else
+                {
+                    keysTab[index] = result.Data[searchedKey].Value;
+                }
+            }, (error) => 
+            {
+                Debug.Log("Got error retrieving user data:");
+                Debug.Log(error.GenerateErrorReport());
+            });
+        }
+
+        public void SetUserData(string data, string value, int index, Action action = null)
+        {
+            PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
+            {
+                Data = new Dictionary<string, string>() {
+                    {data, value}
+                }
+            },
+            result =>
+            {
+                keysTab[index] = value;
+                print("DataSaved");
+                action();
+            },
+            error => {
+                Debug.Log("Got error setting user data Ancestor to Arthur");
+                Debug.Log(error.GenerateErrorReport());
+            });
+        }
+
+        public void UseCode(string code, Action action)
         {
             PlayFabClientAPI.RedeemCoupon(new RedeemCouponRequest
             { 
                 CouponCode = code,
-                CatalogVersion = catalog
+                CatalogVersion = "PP"
             }, result =>
             {
                 LoadingMessage("Code Used");
@@ -171,16 +218,16 @@ namespace KILLER
             );
         }
 
-        public void GetStore(string ID, int storePlace, Action action)
+        public void GetStore(string ID, int storePlace, Action action, string catalog)
         {
             PlayFabClientAPI.GetStoreItems(new GetStoreItemsRequest
             {
                 StoreId = ID,
-                CatalogVersion = "PP"
+                CatalogVersion = catalog
             }, result =>
             {
                 print("StoreLoaded");
-                store = result.Store;
+                store[storePlace] = new List<StoreItem>(result.Store);
                 action();
             },errorCallback =>
             {

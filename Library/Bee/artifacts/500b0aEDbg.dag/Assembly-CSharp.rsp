@@ -539,6 +539,10 @@
 "Assets/Scripts/projectile.cs"
 "Assets/Scripts/roomScript.cs"
 "Assets/Scripts/Setting.cs"
+"Assets/SkinSC.cs"
+"Assets/SkinShopSC.cs"
+"Assets/TitleSC.cs"
+"Assets/TitleShopSC.cs"
 "Assets/UI/Beautiful Progress Bar Free - CYKO/Scripts/SliderScripts.cs"
 -langversion:8.0
 

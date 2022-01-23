@@ -833,16 +833,33 @@ MonoBehaviour:
   newsBody: {fileID: 0}
   money: {fileID: 0}
   Friends: []
+  ShopWindows: []
+  invWindows: []
   tab: {fileID: 0}
   content: {fileID: 0}
+  PPcontent: {fileID: 0}
+  TitleContent: {fileID: 0}
+  SkinContent: {fileID: 0}
   FriendPref: {fileID: 0}
+  ProfilePref: {fileID: 0}
+  TitlePref: {fileID: 0}
+  SkinPref: {fileID: 0}
+  ShopProfilePref: {fileID: 0}
+  ShopTitlePref: {fileID: 0}
+  ShopSkinPref: {fileID: 0}
   searchTab: {fileID: 0}
   shopTab: {fileID: 0}
+  inventoryTab: {fileID: 0}
+  codeTab: {fileID: 0}
   webTab: {fileID: 0}
   contactTab: {fileID: 0}
   settingsTab: {fileID: 1668450693039178724}
+  PPShopContent: {fileID: 0}
+  TitleShopContent: {fileID: 0}
+  SkinShopContent: {fileID: 0}
   txtName: {fileID: 0}
   txtLvl: {fileID: 0}
+  txtTitle: {fileID: 0}
   sl: {fileID: 0}
   pName: {fileID: 0}
   rName: {fileID: 0}
@@ -3575,13 +3592,24 @@ MonoBehaviour:
   panel: {fileID: 0}
   settingsWindow: {fileID: 0}
   LoadingTimeOut: 3
+  keysTab:
+  - Nouveau Joueur
+  - 
+  - 
+  - 
+  - 
+  - 
   Player_ID: 
   Player_DisplayName: 
   Player_Lvl: 1
-  Player_Dollar: 0
+  Player_Gold: 0
   Player_PPID: 1
+  Player_TitleID: 0
   Player_Xp: 0
   inv: []
+  PPStore: []
+  TitleStore: []
+  SkinStore: []
   friendList: []
 --- !u!4 &639739722
 Transform:

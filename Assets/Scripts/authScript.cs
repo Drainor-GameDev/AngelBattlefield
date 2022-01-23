@@ -272,6 +272,8 @@ namespace KILLER
             //playFabmanager.Player_Score = result.Statistics[0].Value;
             playFabmanager.LoadingMessage("Loading Profil SuccessFull...");
             playFabmanager.LoadingHide();
+            playFabmanager.GetUserData("Title", 0);
+            playFabmanager.GetUserData("ArcherSkin", 5);
             GetBalance();
         }
 

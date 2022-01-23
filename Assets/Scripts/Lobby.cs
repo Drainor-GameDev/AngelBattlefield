@@ -9,9 +9,9 @@ using UnityEngine.Video;
 public class Lobby : MonoBehaviour
 {
     public TMPro.TMP_Text newsTitle, newsBody, money;
-    public List<GameObject> Friends, ShopWindows;
-    public GameObject tab, content, PPcontent, FriendPref, ProfilePref, ShopProfilePref, searchTab, shopTab, inventoryTab, codeTab, webTab, contactTab, settingsTab, PPShopContent;
-    public TMPro.TMP_Text txtName, txtLvl;
+    public List<GameObject> Friends, ShopWindows, invWindows;
+    public GameObject tab, content, PPcontent, TitleContent, SkinContent, FriendPref, ProfilePref, TitlePref, SkinPref, ShopProfilePref, ShopTitlePref, ShopSkinPref, searchTab, shopTab, inventoryTab, codeTab, webTab, contactTab, settingsTab, PPShopContent, TitleShopContent, SkinShopContent;
+    public TMPro.TMP_Text txtName, txtLvl, txtTitle;
     public Slider sl;
     public InputField pName, rName;
     public int nb, roomTest;
@@ -33,6 +33,7 @@ public class Lobby : MonoBehaviour
         txtLvl.text = "Level: " + pfm.Player_Lvl.ToString();
         levelBar.fillAmount = (float)pfm.Player_Xp / 2000f;
         profilePicture.sprite = Resources.Load<Sprite>("PP/" + pfm.Player_PPID);
+        ActualiseTitleText();
     }
     public void RejRoom(int room = 0)
     {
@@ -162,6 +163,15 @@ public class Lobby : MonoBehaviour
         }
     }
 
+    public void InventoryTabSelect(int ID)
+    {
+        foreach (GameObject go in invWindows)
+        {
+            go.SetActive(false);
+        }
+        invWindows[ID].SetActive(true);
+    }
+
     public void CodeTab()
     {
         if (codeTab.active == true)
@@ -176,20 +186,50 @@ public class Lobby : MonoBehaviour
 
     public void UseCode()
     {
-        pfm.UseCode(codeTab.GetComponentInChildren<TMPro.TMP_InputField>().text, CodeTab, codeTab.GetComponentInChildren<TMPro.TMP_Dropdown>().options[codeTab.GetComponentInChildren<TMPro.TMP_Dropdown>().value].text);
+        pfm.UseCode(codeTab.GetComponentInChildren<TMPro.TMP_InputField>().text, CodeTab);
     }
 
     public void ActualiseInventory()
     {
+        pfm.GetInventory();
         for (int i = 0; i < PPcontent.transform.childCount; i++)
         {
             Destroy(PPcontent.transform.GetChild(i).gameObject);
         }
         foreach (ItemInstance item in pfm.inv)
         {
-            GameObject go = (Instantiate(ProfilePref, PPcontent.transform));
-            go.name = (item.ItemId).ToString();
-            go.GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + item.ItemId);
+            if (item.CatalogVersion == "PP" && item.ItemClass == "PP")
+            {
+                GameObject go = (Instantiate(ProfilePref, PPcontent.transform));
+                go.name = (item.ItemId).ToString();
+                go.GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + item.ItemId);
+            }
+        }
+        for (int i = 0; i < TitleContent.transform.childCount; i++)
+        {
+            Destroy(TitleContent.transform.GetChild(i).gameObject);
+        }
+        foreach (ItemInstance item in pfm.inv)
+        {
+            if (item.CatalogVersion == "PP" && item.ItemClass == "Title")
+            {
+                GameObject go = (Instantiate(TitlePref, TitleContent.transform));
+                go.name = (item.ItemId).ToString();
+                go.GetComponentInChildren<TMPro.TMP_Text>().text = item.ItemId;
+            }
+        }
+        for (int i = 0; i < SkinContent.transform.childCount; i++)
+        {
+            Destroy(SkinContent.transform.GetChild(i).gameObject);
+        }
+        foreach (ItemInstance item in pfm.inv)
+        {
+            if (item.CatalogVersion == "PP" && item.ItemClass == "Skin")
+            {
+                GameObject go = (Instantiate(SkinPref, SkinContent.transform));
+                go.name = (item.ItemId).ToString();
+                go.GetComponent<Image>().sprite = Resources.Load<Sprite>("Skin/" + item.ItemId);
+            }
         }
     }
     public void AddFriend()
@@ -201,21 +241,65 @@ public class Lobby : MonoBehaviour
 
     public void ActualisePPStore()
     {
-        pfm.GetStore("PPS", 0, ShowPPStore);
+        pfm.GetStore("PPS", 0, ShowPPStore, "PP");
+    }
+
+    public void ActualiseTitleText()
+    {
+        txtTitle.text = pfm.keysTab[0];
     }
 
     public void ShowPPStore()
     {
-        for(int i = 0; i < PPShopContent.transform.childCount;i++)
+        for (int i = 0; i < PPShopContent.transform.childCount; i++)
         {
             Destroy(PPShopContent.transform.GetChild(i).gameObject);
         }
-        foreach(StoreItem pp in pfm.store)
+        foreach (StoreItem pp in pfm.store[0])
         {
             GameObject go = Instantiate(ShopProfilePref, PPShopContent.transform);
             go.name = pp.ItemId;
             go.GetComponentInChildren<TMPro.TMP_Text>().text = pp.VirtualCurrencyPrices["GO"].ToString() + " Gold";
             go.GetComponent<Image>().sprite = Resources.Load<Sprite>("PP/" + pp.ItemId);
+        }
+    }
+
+    public void ActualiseTitleStore()
+    {
+        pfm.GetStore("TitleS", 1, ShowTitleStore, "PP");
+    }
+
+    public void ShowTitleStore()
+    {
+        for (int i = 0; i < TitleShopContent.transform.childCount; i++)
+        {
+            Destroy(TitleShopContent.transform.GetChild(i).gameObject);
+        }
+        foreach (StoreItem title in pfm.store[1])
+        {
+            GameObject go = Instantiate(ShopTitlePref, TitleShopContent.transform);
+            go.name = title.ItemId;
+            go.GetComponentInChildren<TMPro.TMP_Text>().text = title.ItemId + "   " + title.VirtualCurrencyPrices["GO"].ToString() + " Gold";
+        }
+    }
+
+    public void ActualiseSkinStore()
+    {
+        pfm.GetStore("SkinS", 2, ShowSkinStore, "PP");
+    }
+
+    public void ShowSkinStore()
+    {
+        for (int i = 0; i < SkinShopContent.transform.childCount; i++)
+        {
+            Destroy(SkinShopContent.transform.GetChild(i).gameObject);
+        }
+        foreach (StoreItem skin in pfm.store[2])
+        {
+            GameObject go = Instantiate(ShopSkinPref, SkinShopContent.transform);
+            go.name = skin.ItemId;
+            go.GetComponentInChildren<TMPro.TMP_Text>().text = skin.ItemId + "   " + (skin.VirtualCurrencyPrices["RM"]/100).ToString() + "€";
+            go.GetComponent<Image>().sprite = Resources.Load<Sprite>("Skin/" + skin.ItemId);
         }
     }
 
